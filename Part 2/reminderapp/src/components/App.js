@@ -1,5 +1,5 @@
-import React from 'react';
-import Reminder from './Reminder';
+import React from 'react'
+import Reminders from './Reminders'
 
 class App extends React.Component {
   constructor(props) {
@@ -7,6 +7,7 @@ class App extends React.Component {
     this.state = {
       reminders: [],
       newReminder: '',
+      newTime: ''
     }
   }
 
@@ -14,16 +15,20 @@ class App extends React.Component {
     event.preventDefault()
     const reminderObject = {
       topic: this.state.newReminder,
-      time: new Date().toISOString(),
+      time: this.state.newTime,
       id: this.state.reminders.length + 1
     }
 
-    const reminders = this.state.reminders.concat(reminderObject)
-
-    this.setState({
-      reminders,
-      newReminder: ''
-    })
+    if (!this.state.reminders.some(tempReminder => tempReminder.topic === reminderObject.topic)) {
+        const reminders = this.state.reminders.concat(reminderObject);
+        this.setState({
+          reminders,
+          newReminder: '',
+          newTime: ''
+        })
+    } else {
+      alert("Failed to create reminder: reminder already exists");
+    }
   }
 
   handleReminderChange = (event) => {
@@ -31,22 +36,30 @@ class App extends React.Component {
     this.setState({newReminder: event.target.value})
   }
 
+  handleTimeChange = (event) => {
+    console.log(event.target.value)
+    this.setState({newTime: event.target.value})
+  }
+
   render() {
     return (
       <div>
         <h2>Add a reminder</h2>
+        //Form could be separated App.js to be a separate component
+        //For UTU course DTEK2040 the current separation should be fine should enough to clear Part 2 - Exercise 2.7
         <form onSubmit={this.addReminder}>
           <div>
             Topic: <input value={this.state.newReminder} onChange={this.handleReminderChange}/>
+          </div>
+          <div>
+            Time: <input value={this.state.newTime} onChange={this.handleTimeChange} />
           </div>
           <div>
             <button type="submit">Add</button>
           </div>
         </form>
         <h2>Reminders:</h2>
-        <ul>
-          {this.state.reminders.map(reminder => <Reminder key={reminder.id} topic={reminder.topic} time={reminder.time}/>)}
-        </ul>
+        <Reminders state={this.state}/>
       </div>
     )
   }

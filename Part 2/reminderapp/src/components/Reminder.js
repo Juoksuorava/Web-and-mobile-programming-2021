@@ -2,7 +2,7 @@ import React from 'react';
 
 const Reminder = (props) => {
     return (
-      <li>{props.time} {props.topic}</li>
+      <li> {props.topic} at {props.time}</li>
     )
 }
 
