@@ -45,8 +45,9 @@ class App extends React.Component {
     return (
       <div>
         <h2>Add a reminder</h2>
-        //Form could be separated App.js to be a separate component
-        //For UTU course DTEK2040 the current separation should be fine should enough to clear Part 2 - Exercise 2.7
+        {/*Form could be separated App.js to be a separate component.
+        For UTU course DTEK2040 the current separation of components
+        should be enough to clear Part 2 - Exercise 2.7*/}
         <form onSubmit={this.addReminder}>
           <div>
             Topic: <input value={this.state.newReminder} onChange={this.handleReminderChange}/>
