@@ -1,8 +1,10 @@
 import React from 'react'
 import Reminders from './Reminders'
+import axios from 'axios'
 
 class App extends React.Component {
   constructor(props) {
+    console.log("constructed")
     super(props)
     this.state = {
       reminders: [],
@@ -31,6 +33,15 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount(){
+    console.log("mounted")
+    axios.get('http://localhost:3001/reminders')
+      .then(response => {
+        this.setState({ reminders: response.reminders })
+        console.log("promise resolved")
+        })
+  }
+
   handleReminderChange = (event) => {
     console.log(event.target.value)
     this.setState({newReminder: event.target.value})
@@ -41,7 +52,10 @@ class App extends React.Component {
     this.setState({newTime: event.target.value})
   }
 
+  
+
   render() {
+    console.log("render")
     return (
       <div>
         <h2>Add a reminder</h2>
@@ -60,7 +74,7 @@ class App extends React.Component {
           </div>
         </form>
         <h2>Reminders:</h2>
-        <Reminders state={this.state}/>
+        <Reminders reminders={this.state.reminders}/>
       </div>
     )
   }
