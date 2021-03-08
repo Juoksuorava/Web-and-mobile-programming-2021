@@ -15,29 +15,38 @@ class App extends React.Component {
 
   addReminder = (event) => {
     event.preventDefault()
+    let mounted = true;
     const reminderObject = {
       topic: this.state.newReminder,
       time: this.state.newTime,
-      id: this.state.reminders.length + 1
     }
 
     if (!this.state.reminders.some(tempReminder => tempReminder.topic === reminderObject.topic)) {
-        const reminders = this.state.reminders.concat(reminderObject);
-        this.setState({
-          reminders,
-          newReminder: '',
-          newTime: ''
-        })
+      axios.post('http://localhost:3001/reminders', reminderObject)
+        .then(response => {
+          if(mounted) {
+            console.log(response)
+            this.setState({
+              reminders: this.state.reminders.concat(response.data),
+              newReminder: '',
+              newTime: ''
+            })
+          }
+      })
     } else {
       alert("Failed to create reminder: reminder already exists");
     }
+    return () => mounted = false;
   }
 
   componentDidMount(){
     console.log("mounted")
     axios.get('http://localhost:3001/reminders')
       .then(response => {
-        this.setState({ reminders: response.reminders })
+        console.log(response)
+        this.setState({
+          reminders: response.data,
+        })
         console.log("promise resolved")
         })
   }
