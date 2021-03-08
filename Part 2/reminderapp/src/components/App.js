@@ -39,6 +39,17 @@ class App extends React.Component {
     return () => mounted = false;
   }
 
+  deleteReminder = (id) => {
+    axios.delete('https://localhost:3001/reminders/${id}')
+      .then(response => {
+        console.log(response)
+        console.log(response.data)
+        this.setState({
+          reminders: this.state.reminders.filter(reminder => reminder.id !== id)
+        })
+      })
+  }
+
   componentDidMount(){
     console.log("mounted")
     axios.get('http://localhost:3001/reminders')
@@ -83,7 +94,7 @@ class App extends React.Component {
           </div>
         </form>
         <h2>Reminders:</h2>
-        <Reminders reminders={this.state.reminders}/>
+        <Reminders reminders={this.state.reminders} deleteReminder={this.deleteReminder}/>
       </div>
     )
   }
