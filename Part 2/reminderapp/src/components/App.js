@@ -40,7 +40,7 @@ class App extends React.Component {
   }
 
   deleteReminder = (id) => {
-    axios.delete('https://localhost:3001/reminders/${id}')
+    axios.delete(`http://localhost:3001/reminders/${id}`)
       .then(response => {
         console.log(response)
         console.log(response.data)
@@ -48,6 +48,10 @@ class App extends React.Component {
           reminders: this.state.reminders.filter(reminder => reminder.id !== id)
         })
       })
+      .catch(error => {
+        console.log('fail')
+      })
+      
   }
 
   componentDidMount(){
@@ -81,6 +85,7 @@ class App extends React.Component {
         <h2>Add a reminder</h2>
         {/*Form could be separated App.js to be a separate component.
         For UTU course DTEK2040 the current separation of components
+        (Reminders from App and a single Reminder from Reminders)
         should be enough to clear Part 2 - Exercise 2.7*/}
         <form onSubmit={this.addReminder}>
           <div>

@@ -1,16 +1,6 @@
 {
   "reminders": [
     {
-      "topic": "Buy some eggs",
-      "time": "2021-11-10T13:00:00.141Z",
-      "id": 1
-    },
-    {
-      "topic": "Make an omelette",
-      "time": "2021-11-11T08:00:00.141Z",
-      "id": 2
-    },
-    {
       "topic": "Wash dishes",
       "time": "2021-11-11T09:00:00.000Z",
       "id": 3
