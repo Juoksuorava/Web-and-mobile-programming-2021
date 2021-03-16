@@ -1,0 +1,7 @@
+POST http://localhost:3001/reminders
+content-type: application/json
+
+{
+    "topic": "Remember to test your app",
+    "time": "Always"
+}
