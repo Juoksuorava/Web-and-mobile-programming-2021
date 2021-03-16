@@ -1,1 +1,1 @@
-GET http://localhost:3001/reminders
+GET http://localhost:3001/api/reminders
