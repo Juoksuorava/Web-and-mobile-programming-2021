@@ -1,5 +1,6 @@
 import React from 'react'
 import Reminders from './Reminders'
+import Form from './Form'
 import axios from 'axios'
 
 class App extends React.Component {
@@ -40,18 +41,19 @@ class App extends React.Component {
   }
 
   deleteReminder = (id) => {
-    axios.delete(`http://localhost:3001/reminders/${id}`)
-      .then(response => {
-        console.log(response)
-        console.log(response.data)
-        this.setState({
-          reminders: this.state.reminders.filter(reminder => reminder.id !== id)
+    if(window.confirm("Do you want to delete this reminder?")){
+      axios.delete(`http://localhost:3001/reminders/${id}`)
+        .then(response => {
+          console.log(response)
+          console.log(response.data)
+          this.setState({
+            reminders: this.state.reminders.filter(reminder => reminder.id !== id)
+          })
         })
-      })
-      .catch(error => {
-        console.log('fail')
-      })
-      
+        .catch(error => {
+          console.log('fail')
+        })
+    }   
   }
 
   componentDidMount(){
@@ -83,21 +85,7 @@ class App extends React.Component {
     return (
       <div>
         <h2>Add a reminder</h2>
-        {/*Form could be separated App.js to be a separate component.
-        For UTU course DTEK2040 the current separation of components
-        (Reminders from App and a single Reminder from Reminders)
-        should be enough to clear Part 2 - Exercise 2.7*/}
-        <form onSubmit={this.addReminder}>
-          <div>
-            Topic: <input value={this.state.newReminder} onChange={this.handleReminderChange}/>
-          </div>
-          <div>
-            Time: <input value={this.state.newTime} onChange={this.handleTimeChange} />
-          </div>
-          <div>
-            <button type="submit">Add</button>
-          </div>
-        </form>
+        <Form state={this.state} addReminder={this.addReminder} handleReminderChange={this.handleReminderChange} handleTimeChange={this.handleTimeChange}/>
         <h2>Reminders:</h2>
         <Reminders reminders={this.state.reminders} deleteReminder={this.deleteReminder}/>
       </div>
