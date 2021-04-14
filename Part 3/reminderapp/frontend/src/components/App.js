@@ -3,6 +3,13 @@ import Reminders from './Reminders'
 import Form from './Form'
 import axios from 'axios'
 
+const baseUrl = '/notes'
+
+const getAll = () => {
+  const request = axios.get(baseUrl)
+  return request.then(response => response.data)
+}
+
 class App extends React.Component {
   constructor(props) {
     console.log("constructed")

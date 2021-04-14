@@ -7,6 +7,8 @@ app.use(cors())
 
 app.use(bodyParser.json())
 
+app.use(express.static('build'))
+
 let reminders = [
     {
         "topic": "Buy some eggs",
