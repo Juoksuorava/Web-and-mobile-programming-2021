@@ -3,12 +3,7 @@ import Reminders from './Reminders'
 import Form from './Form'
 import axios from 'axios'
 
-const baseUrl = '/notes'
-
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
+const baseUrl = '/api/reminders'
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +14,11 @@ class App extends React.Component {
       newReminder: '',
       newTime: ''
     }
+  }
+
+  getAll = () => {
+    const request = axios.get(baseUrl)
+    return request.then(response => response.data)
   }
 
   addReminder = (event) => {
