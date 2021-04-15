@@ -3,10 +3,19 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+const Reminder = require('./models/reminder')
+
+const formatReminder = (reminder) => {
+    return {
+        topic: reminder.topic,
+        time: reminder.time,
+        id: reminder._id
+    }
+}
+
 app.use(cors())
-
 app.use(bodyParser.json())
-
+app.use(express.json())
 app.use(express.static('build'))
 
 let reminders = [
@@ -37,18 +46,19 @@ app.get('/api/', (request, response) => {
 })
 
 app.get('/api/reminders', (request, response) => {
-    response.json(reminders)
+    Reminder
+        .find({}, {__v: 0})
+        .then(reminders => {
+            response.json(reminders.map(formatReminder))
+        })
 })
 
 app.get('/api/reminders/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const reminder = reminders.find(reminder => reminder.id === id)
-    
-    if (reminder) {
-        response.json(reminder)
-    } else {
-        response.status(404).end()
-    }
+    Reminder
+        .findById(request.params.id)
+        .then(reminder => {
+            response.json(formatReminder(reminder))
+        })
 })
 
 app.delete('/api/reminders/:id', (request, response) => {
@@ -77,15 +87,17 @@ app.post('/api/reminders', (request, response) => {
         return response.status(400).json({error: 'topic must be unique'})
     }
 
-    const reminder = {
+    const reminder = new Reminder({
         topic: body.topic,
         time: body.time,
-        id: generateId(0, 100 * 100)
-    }
+        id: generateId,
+    })
 
-    reminders = reminders.concat(reminder)
-
-    response.json(reminder)
+    reminder
+        .save()
+        .then(savedReminder => {
+            response.json(formatReminder(savedReminder))
+        })
 })
 
 const PORT = process.env.PORT || 3001

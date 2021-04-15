@@ -1,3 +1,5 @@
 # dependencies
 /node_modules
 /mongoTest.js
+/indexTest.js
+/models/reminderTest.js
