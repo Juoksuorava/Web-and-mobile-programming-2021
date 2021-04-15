@@ -57,14 +57,27 @@ app.get('/api/reminders/:id', (request, response) => {
     Reminder
         .findById(request.params.id)
         .then(reminder => {
+            if (reminder) {
             response.json(formatReminder(reminder))
+            } else {
+                response.status(404).end()
+            }
         })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send({ error: 'malformatted id' })
+          })
 })
 
 app.delete('/api/reminders/:id', (request, response) => {
-    const id = Number(request.params.id)
-    reminders = reminders.filter(reminder => reminder.id !== id)
-    response.status(204).end()
+    Reminder
+        .findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => {
+            response.status(400).send({ error: 'malformatted id' })
+        })
 })
 
 const generateId = (min, max) => {
